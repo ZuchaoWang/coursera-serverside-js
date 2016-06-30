@@ -19,7 +19,7 @@ exports.verifyOrdinaryUser = function (req, res, next) {
             if (err) {
                 var err = new Error('You are not authenticated!');
                 err.status = 401;
-                return next(err);
+                next(err);
             } else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
@@ -31,6 +31,16 @@ exports.verifyOrdinaryUser = function (req, res, next) {
         // return an error
         var err = new Error('No token provided!');
         err.status = 403;
-        return next(err);
+        next(err);
     }
+};
+
+exports.verifyAdmin = function (req, res, next) {
+  if (req.decoded && req.decoded._doc && req.decoded._doc.admin) {
+    next();
+  } else {
+    var err = new Error('You are not authenticated!');
+    err.status = 401;
+    next(err);
+  }
 };
