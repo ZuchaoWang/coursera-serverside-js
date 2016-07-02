@@ -14,7 +14,7 @@ favoriteRouter.route('/')
     Favorites.find({
         favoriteBy: req.decoded._doc._id
       })
-      .populate('dishId')
+      .populate('dish')
       .populate('favoriteBy')
       .exec(function(err, favorites) {
         if (err) throw err;
@@ -24,11 +24,11 @@ favoriteRouter.route('/')
   .post(function(req, res, next) {
     Favorites.find({
       favoriteBy: req.decoded._doc._id,
-      dishId: req.body._id
+      dish: req.body._id
     }, function(err, docs) {
       if (!docs.length) {
         var newFavorite = {
-          dishId: req.body._id,
+          dish: req.body._id,
           favoriteBy: req.decoded._doc._id
         };
         Favorites.create(newFavorite, function(err2, favorite) {
@@ -38,7 +38,7 @@ favoriteRouter.route('/')
           res.writeHead(200, {
             'Content-Type': 'text/plain'
           });
-          res.end('Added the favorite with dishId: ' + favorite.dishId);
+          res.end('Added the favorite with dishId: ' + favorite.dish);
         });
       } else {
         var newErr = new Error('The favorite dish already existed!');
@@ -63,7 +63,7 @@ favoriteRouter.route('/:dishId')
   .delete(function(req, res, next) {
     Favorites.find({
         favoriteBy: req.decoded._doc._id,
-        dishId: req.params.dishId
+        dish: req.params.dishId
       })
       .remove()
       .exec(function(err, favorites) {
