@@ -39,3 +39,6 @@ jspm_packages
 # My customs
 sessions
 mongodb
+week4/rest-server-passport/bin/cert.csr
+week4/rest-server-passport/bin/certificate.pem
+week4/rest-server-passport/bin/private.key
